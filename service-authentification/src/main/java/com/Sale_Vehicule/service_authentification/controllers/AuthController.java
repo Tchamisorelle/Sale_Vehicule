@@ -21,12 +21,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest.getPhone(), loginRequest.getPassword());
+        return authService.login(loginRequest.getEmail(), loginRequest.getPassword());
     }
 
     @PostMapping("/check-password")
     public boolean checkPassword(@RequestBody LoginRequest checking) {
-        return authService.checkPassword(checking.getPhone(), checking.getPassword());
+        return authService.checkPassword(checking.getEmail(), checking.getPassword());
     }
     
     

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,11 +32,11 @@ public class AuthService {
         addAuthorizationHeaderInterceptor(restTemplate);
     }
 
-    public String login(String phone, String password) {
+    public String login(String email, String password) {
         Person[] users = getUsers();
         if (users != null) {
             for(Person user : users) {
-                if(user.getTel().equals(phone) && passwordEncoder.matches(password, user.getPassword())) {
+                if(user.getEmail().equals(email) && passwordEncoder.matches(password, user.getPassword())) {
                     token = utils.generateToken(user);
                     return token;
                 }
@@ -46,11 +46,11 @@ public class AuthService {
         throw new RuntimeException("Utilisateur inconnu !");
     }
 
-    public boolean checkPassword(String phone, String password) {
+    public boolean checkPassword(String email, String password) {
         Person[] users  = getUsers();
         if (users != null) {
             for (Person user : users) {
-                if(user.getTel().equals(phone) && passwordEncoder.matches(password, user.getPassword())) {
+                if(user.getEmail().equals(email) && passwordEncoder.matches(password, user.getPassword())) {
                     return true;
                 }
             }

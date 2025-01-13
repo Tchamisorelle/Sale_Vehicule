@@ -1,6 +1,7 @@
 package com.Sale_Vehicule.service_authentification.utils;
 
 import java.util.Date;
+
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -8,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 import com.Sale_Vehicule.service_authentification.dto.Person;
 
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.JwtBuilder;
 
 @Component
 public class Utils {
@@ -27,14 +28,12 @@ public class Utils {
         
 
         JwtBuilder builder = Jwts.builder()
-            .setSubject(user.getTel())
+            .setSubject(user.getEmail())
             .setIssuedAt(now)
             .setExpiration(expiryDate)
             .signWith(key)
-            .claim("phone", user.getTel())
             .claim("password", user.getPassword())
             .claim("name", user.getName())
-            .claim("solde", user.getSolde())
             .claim("role", user.getRole());
 
         return builder.compact();
