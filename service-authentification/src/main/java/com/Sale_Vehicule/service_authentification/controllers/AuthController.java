@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Sale_Vehicule.service_authentification.dto.LoginRequest;
 import com.Sale_Vehicule.service_authentification.services.AuthService;
+
+import java.security.Principal;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,5 +34,9 @@ public class AuthController {
         return authService.checkPassword(checking.getEmail(), checking.getPassword());
     }
     
+    @GetMapping("/me")
+    public ResponseEntity<?> getUserDetails(Principal principal) {
+        return ResponseEntity.ok("Utilisateur connecté : " + principal.getName());
+    }
     
 }
