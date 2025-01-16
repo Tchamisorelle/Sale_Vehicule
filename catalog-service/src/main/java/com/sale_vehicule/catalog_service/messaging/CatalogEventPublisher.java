@@ -1,23 +1,31 @@
 package com.sale_vehicule.catalog_service.messaging;
 
-import org.springframework.amqp.core.AmqpTemplate;
+import com.sale_vehicule.catalog_service.model.Vehicle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CatalogEventPublisher {
 
-    private final AmqpTemplate amqpTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(CatalogEventPublisher.class);
+
+    private final RabbitTemplate rabbitTemplate;
 
     @Value("${catalog.exchange}")
-    private String exchange;
+    private String catalogExchange;
 
-    public CatalogEventPublisher(AmqpTemplate amqpTemplate) {
-        this.amqpTemplate = amqpTemplate;
+    public CatalogEventPublisher(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void publishEvent(String routingKey, Object message) {
-        amqpTemplate.convertAndSend(exchange, routingKey, message);
-        System.out.println("Événement publié : " + routingKey + " -> " + message);
+    public void publishEvent(String eventType, Vehicle vehicle) {
+        logger.info("📢 Publishing event: {} -> {}", eventType, vehicle);
+        rabbitTemplate.convertAndSend(catalogExchange, eventType, vehicle, message -> {
+            message.getMessageProperties().setHeader("__TypeId__", vehicle.getClass().getName());
+            return message;
+        });
     }
 }

@@ -35,7 +35,7 @@ public class CatalogService {
 
         // Ajout d'un observateur d'exemple
         this.subject.addObserver(new EmailNotificationObserver("msteach1547@gmail.com"));
-        logger.info("Observateur ajoute : msteach1547@gmail.com");
+        logger.info("Observateur ajouté : msteach1547@gmail.com");
     }
 
     // Récupérer tous les véhicules
@@ -77,25 +77,14 @@ public class CatalogService {
 
     // Supprimer un véhicule et publier l'événement
     public void deleteVehicle(Long id) {
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Véhicule introuvable avec l'ID : " + id));
+
         vehicleRepository.deleteById(id);
 
         // Publier l'événement vehicle.deleted
-        eventPublisher.publishEvent("vehicle.deleted", "Véhicule supprimé avec l'ID : " + id);
-        logger.info("Événement publié : vehicle.deleted -> ID : " + id);
-    }
-
-    // Méthode pour appliquer un décorateur et publier l'événement
-    public Vehicle addAnimation(Vehicle vehicle) {
-        Vehicle decoratedVehicle = new AnimationDecorator(vehicle);
-        vehicle.setName(decoratedVehicle.getName());
-        vehicle.setPrice(decoratedVehicle.getPrice());
-        vehicleRepository.save(vehicle);
-
-        // Publier l'événement vehicle.updated
-        eventPublisher.publishEvent("vehicle.updated", vehicle);
-        logger.info("Événement publié : vehicle.updated -> " + vehicle);
-
-        return vehicle;
+        eventPublisher.publishEvent("vehicle.deleted", vehicle);
+        logger.info("Événement publié : vehicle.deleted -> " + vehicle);
     }
 
     public Vehicle addAccessory(Vehicle vehicle) {
@@ -103,11 +92,25 @@ public class CatalogService {
         vehicle.setName(decoratedVehicle.getName());
         vehicle.setPrice(decoratedVehicle.getPrice());
         vehicleRepository.save(vehicle);
-
+    
         // Publier l'événement vehicle.updated
         eventPublisher.publishEvent("vehicle.updated", vehicle);
         logger.info("Événement publié : vehicle.updated -> " + vehicle);
-
+    
         return vehicle;
     }
+    
+    public Vehicle addAnimation(Vehicle vehicle) {
+        Vehicle decoratedVehicle = new AnimationDecorator(vehicle);
+        vehicle.setName(decoratedVehicle.getName());
+        vehicle.setPrice(decoratedVehicle.getPrice());
+        vehicleRepository.save(vehicle);
+    
+        // Publier l'événement vehicle.updated
+        eventPublisher.publishEvent("vehicle.updated", vehicle);
+        logger.info("Événement publié : vehicle.updated -> " + vehicle);
+    
+        return vehicle;
+    }
+    
 }
