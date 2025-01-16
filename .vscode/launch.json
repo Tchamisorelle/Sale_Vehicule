@@ -41,17 +41,6 @@
             "mainClass": "com.Sale_Vehicule.service_authentification.ServiceAuthentificationApplication",
             "projectName": "service-authentification",
             "args": "",
-            "envFile": "${workspaceFolder}/.env",
-            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=35633 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=service-authentification"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-DocumentServiceApplication<document-service>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.Sale_Vehicule.document_service.DocumentServiceApplication",
-            "projectName": "document-service",
-            "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
     ]
