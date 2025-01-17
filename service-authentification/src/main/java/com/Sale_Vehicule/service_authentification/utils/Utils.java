@@ -7,7 +7,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.Sale_Vehicule.service_authentification.dto.Person;
+import com.Sale_Vehicule.service_authentification.dto.Costumer;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -19,7 +19,7 @@ public class Utils {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public String generateToken(Person user) {
+    public String generateToken(Costumer user) {
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
 
         Date now = new Date();

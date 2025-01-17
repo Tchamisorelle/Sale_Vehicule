@@ -11,14 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.Sale_Vehicule.service_authentification.dto.Person;
+import com.Sale_Vehicule.service_authentification.dto.Costumer;
 import com.Sale_Vehicule.service_authentification.utils.Utils;
 
 @Service
 public class AuthService {
     
     private final RestTemplate restTemplate;
-    private final String allUsers = "http://localhost:8079/SERVICE-USERS/api/get-persons";
+    private final String allUsers = "http://localhost:8079/CUSTOMER-SERVICE/api/customer/get";
     private String token;
 
     @Autowired
@@ -33,9 +33,9 @@ public class AuthService {
     }
 
     public String login(String email, String password) {
-        Person[] users = getUsers();
+        Costumer[] users = getUsers();
         if (users != null) {
-            for(Person user : users) {
+            for(Costumer user : users) {
                 if(user.getEmail().equals(email) && passwordEncoder.matches(password, user.getPassword())) {
                     token = utils.generateToken(user);
                     return token;
@@ -47,9 +47,9 @@ public class AuthService {
     }
 
     public boolean checkPassword(String email, String password) {
-        Person[] users  = getUsers();
+        Costumer[] users  = getUsers();
         if (users != null) {
-            for (Person user : users) {
+            for (Costumer user : users) {
                 if(user.getEmail().equals(email) && passwordEncoder.matches(password, user.getPassword())) {
                     return true;
                 }
@@ -59,8 +59,8 @@ public class AuthService {
         return false;
     }
 
-    private Person[] getUsers() {
-        ResponseEntity<Person[]> response = restTemplate.getForEntity(allUsers, Person[].class);
+    private Costumer[] getUsers() {
+        ResponseEntity<Costumer[]> response = restTemplate.getForEntity(allUsers, Costumer[].class);
         return response.getBody();
     }
 
